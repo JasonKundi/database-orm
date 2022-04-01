@@ -30,12 +30,6 @@ async function seed() {
     },
   });
 
-  const createdTicket = await prisma.ticket.create({
-      data: {
-          
-      }
-  })
-
   const createdScreening = await prisma.screening.create({
     data: {
       startsAt: new Date(Date.parse("2022-03-31  20:00:00")),
@@ -47,6 +41,17 @@ async function seed() {
       },
     },
   });
+
+  const createdTicket = await prisma.ticket.create({
+      data: {
+          customer: {
+              connect: {id: createdCustomer.id}
+          },
+          screening: { 
+              connect: { id: createdScreening.id}
+          }
+      }
+  })
 
   //  const createdMovieAndScreening = await prisma.movie.create({
   //    data: {
@@ -67,6 +72,7 @@ async function seed() {
   console.log("Customer created", createdCustomer);
   console.log("Movie created", createdMovie)
   console.log("Screening created", createdScreening)
+  console.log("Ticket created", createdTicket)
   //console.log("Movie nested screening", createdMovieAndScreening);
 
   // Don't edit any of the code below this line
